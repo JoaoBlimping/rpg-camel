@@ -1,0 +1,5 @@
+# Ok this is my new scripting language for the game and it is stack based hell yeah.
+# In this file we shall show some nice things and also how they will translate to the bytecode
+# stuff.
+$FUCK "fuck" $
+$sayFuck FUCK print $

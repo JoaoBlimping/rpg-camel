@@ -1,0 +1,30 @@
+# Here is what some CENOS will look like for your enjoyment.
+##
+# Constants.
+##
+:say 0 ;
+:fucker "fuck you CUNT" ;
+
+##
+# Says rude phrase when top of stack is true
+# do ->
+# do tells whether or not to print the rude phrase
+##
+:onTrue
+    ? fucker println >
+;
+
+5 dec 4 = onTrue
+
+
+
+##
+# Here is a fairly gamish looking example.
+##
+:dialogue
+    "Hello you fuckeres, my name is banog marienri,"
+    "I am the greatest of all time, but it is not enough."
+    "I am greater than TIme."
+    "BANOG"
+    say !
+;
