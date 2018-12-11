@@ -30,6 +30,10 @@ public class Tokeniser
      */
     public Tokeniser(String content)
     {
+        if (!WHITESPACES.contains(content.charAt(content.length() - 1)))
+        {
+            throw new TokenisationException("Script must end with whitespace.");
+        }
         this.content = content;
     }
 
@@ -55,7 +59,13 @@ public class Tokeniser
     public void quoted()
     {
         int start = this.cursor + 1;
-        for (this.cursor = start; this.content.charAt(this.cursor) != QUOTE; this.cursor++) {}
+        for (this.cursor = start; this.content.charAt(this.cursor) != QUOTE; this.cursor++)
+        {
+            if (this.cursor == this.content.length() - 1)
+            {
+                throw new TokenisationException("Quotes must be closed.");
+            }
+        }
         tokens.add(this.content.substring(start, this.cursor));
         this.cursor++;
     }

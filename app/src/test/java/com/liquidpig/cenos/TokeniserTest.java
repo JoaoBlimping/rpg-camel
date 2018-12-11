@@ -1,6 +1,8 @@
 package com.liquidpig.cenos;
 
 import org.junit.Test;
+import org.junit.Rule;
+import org.junit.rules.ExpectedException;
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -10,6 +12,9 @@ import java.util.List;
  */
 public class TokeniserTest
 {
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
+
     @Test
     public void simpleTest()
     {
@@ -33,5 +38,20 @@ public class TokeniserTest
         assertEquals("ning # ning gerg", tokens.get(3));
         assertEquals("f", tokens.get(4));
         assertEquals("gop", tokens.get(5));
+    }
+
+    @Test
+    public void exceptionTest()
+    {
+        Tokeniser tokeniser = new Tokeniser("bibguib \" ");
+        exceptionRule.expect(TokenisationException.class);
+        exceptionRule.expectMessage("Quotes must be closed.");
+        tokeniser.tokenise();
+        tokeniser = new Tokeniser("bibguib rf r fgerg erg");
+        tokeniser.tokenise();
+        exceptionRule.expectMessage("Script must end with whitespace.");
+        tokeniser = new Tokeniser("bibguib rf r fgerg erg ");
+        tokeniser.tokenise();
+        System.out.println("YEEE");
     }
 }
