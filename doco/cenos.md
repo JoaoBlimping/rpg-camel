@@ -39,25 +39,25 @@ This is where the full lot of instructions is written down.
 ## Instruction Types
 Each built in function will have it's own instruction type, as will the secret instructions.
 
-### JUMP - 00
+### JUMP
 Stores an integer for a relative jump.
 
-### JUMPIF - 01
+### JUMPIF
 Stores an integer for a relative jump. consumes top of stack and jumps if it's true.
 
-### PRECALL - 02
+### PRECALL
 Stores an integer which points to a given function in the function table to jump to. This
 instruction should not get called and is just a placeholder until it can be replaced by a CALL
 command.
 
-### CALL - 03
+### CALL
 Puts current location on stack and then jumps absolutely to location in stored integer.
 
-### RETURN - 04
+### RETURN
 Takes the current number off the stack and jumps to that numbered instruction. Stores an integer
 value with the number of variables this function had.
 
-### EXTERNAL CALL - 05
+### EXTERNAL CALL
 yeah this one will actually call a method that has been linked in to the vm from outside, and it
 does so by taking the top item off the stack which is a number and using it to select a registered
 function by numerical code.
@@ -65,16 +65,32 @@ function by numerical code.
 The number of other things it takes off the stack is unknown but you should know based on what you
 are calling.
 
-### PUSH - 06
+### PUSH
 adds a 4 byte int to the stack. When you write an int constant it does push, and when you write a
 float constant it also does push but with the binary representation of a float as an int. When you
 write a string constant it writes a sequence of pushes writing the string characters as ascii. The
 bytes are squashed into the 4 byte numbers, but the null terminator at the end gets it's own push,
 also, the null terminator is placed on the stack first and it works backwards from there.
 
-### ADD - 07
+### ADD
 Obvious, it takes two items off stack and places back the addition of them. Doesn't need to store
 anything.
+
+### YIELD
+This is basically a lot like return except it puts the yielded value onto the stack and then on top
+of that it places the instruction number of the function that the yield is so that when you
+continue the function it can skip straight to that point. Obvbiously this is going to need some
+compile time shit to figure out what number it is in the function and all that.
+
+I have realised that there are going to be some big problems with yielding and local variables as
+you can not really trust in a yielding function that local variables will stay the same between
+yields. Ok maybe I will just say that's intended functionality, so you cannot trust that local
+variables stay consistent between yields.
+
+### CONTINUE
+counterpart of yield which also takes a number off the stack and adds that to the jump it makes,
+with the idea that that number is the yield location thingo.
+
 
 
 

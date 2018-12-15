@@ -25,4 +25,17 @@ public class Function
         this.name = name;
         this.locals = locals;
     }
+
+    @Override
+    public String toString()
+    {
+        String content = "";
+        content += this.name + ":" + this.locals;
+        for (Instruction instruction: this.instructions)
+        {
+            content += "," + instruction.type;
+            if (instruction.value != 0) content += ":" + instruction.value;
+        }
+        return content;
+    }
 }

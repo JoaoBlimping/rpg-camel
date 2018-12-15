@@ -17,8 +17,7 @@ public class CompilerTest
     @Test
     public void groupTest()
     {
-        Tokeniser tokeniser = new Tokeniser("aaa :bingo 6 multiply println ; bongo :bongo 4 5 add ; bingo ");
-        List<String> tokens = tokeniser.tokenise();
+        List<String> tokens = new Tokeniser("aaa :bingo 6 multiply println ; bongo :bongo 4 5 add ; bingo ").tokenise();
         Map<String, List<String>> functions = Compiler.groupTokens(tokens);
         List<String> bingo = functions.get("bingo");
         List<String> bongo = functions.get("bongo");
@@ -40,8 +39,36 @@ public class CompilerTest
     @Test
     public void groupExceptionTest()
     {
+        // TODO: fuck off.
         assertEquals(1, 1);
     }
 
-    public void 
+    @Test
+    public void functionTableTest()
+    {
+        compareFunction(
+            "$bongo  %bingo   =true > inc dup\n=10 le < ",
+            "_start:2,PUSH_LOCAL,POP_LOCAL:1,PUSH:1,JUMP_IF:5,FUCK,FUCK,PUSH:10,FUCK,JUMP:-5",
+            "_start"
+        );
+        compareFunction(
+            "> > < > > < < > < < ",
+            "_start:0,JUMP_IF:9,JUMP_IF:1,JUMP:-1,JUMP_IF:3,JUMP_IF:1,JUMP:-1,JUMP:-3,JUMP_IF:1,JUMP:-1,JUMP:-9",
+            "_start"
+        );
+    }
+
+    /**
+     * Compares the string version of a function to a given expected string version.
+     * @param script is the script from which to compile the function to test.
+     * @param output is the expected string version of the function.
+     * @param func is the function in the script to test.
+     */
+    private void compareFunction(String script, String output, String func)
+    {
+        List<String> tokens = new Tokeniser(script).tokenise();
+        Map<String, List<String>> groups = Compiler.groupTokens(tokens);
+        Map<String, Function> functions = Compiler.functionTable(groups);
+        assertEquals(output, functions.get(func).toString());
+    }
 }
